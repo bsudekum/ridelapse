@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.js'></script>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.css' rel='stylesheet' />
+  <!--[if lte IE 8]>
+    <link href='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.ie.css' rel='stylesheet' >
+  <![endif]-->
+  <script src='ridelapse.json'></script>
+  
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+
+  var map = L.mapbox.map('map', 'examples.map-d40qac29',{
+    closePopupOnClick:false
+  }).setView([38.91499, -77.03659], 13);
+
+  function style(feature) {
+      return {
+          weight: 10,
+          opacity: 1,
+          color: '#444',
+      };
+  }
+
+  var line = L.geoJson(ride, {
+      style:style
+  }).addTo(map);
+
+  var marker = L.marker([0, 0], {
+      icon: L.mapbox.marker.icon({
+          type: 'Feature',
+          geometry: {
+              type: 'Point',
+              coordinates: [-77, 37.9]
+          },
+          properties: { }
+      })
+  });
+
+  var coor = ride.features[0].geometry.coordinates;
+  i=1;
+  console.log(coor.length)
+  window.setInterval(function() {
+      i++
+      marker.setLatLng(L.latLng(
+          coor[i][1],coor[i][0]
+      ))
+  }, 47);
+
+  marker.addTo(map).bindPopup('<video id="sampleMovie" width="320" height="180" preload controls autoplay><source src="http://pdl.vimeocdn.com/66858/523/174342957.mp4?aksessionid=721ae4e6ed50b849c69204944cd41f26&token=1372638456_7b5c8a694b665709aff5f76f24368f78" type="video/mp4; codecs="avc1.42E01E, mp4a.40.2" /></video>').openPopup();
+
+
+
+</script>
+</script>
+</body>
+</html>
