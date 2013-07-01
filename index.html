@@ -20,13 +20,14 @@
 
   var map = L.mapbox.map('map', 'examples.map-d40qac29',{
     closePopupOnClick:false
-  }).setView([38.91499, -77.03659], 13);
+  }).setView([38.94999, -77.01459], 13);
 
   function style(feature) {
       return {
-          weight: 10,
+          weight: 7,
           opacity: 1,
           color: '#444',
+          opacity:.7
       };
   }
 
@@ -41,23 +42,36 @@
               type: 'Point',
               coordinates: [-77,37.9]
           },
-          properties: { }
+          properties: {
+            "marker-symbol": "star",
+          }
       })
-  });
+  }).addTo(map)
+
+
 
   var coor = ride.features[0].geometry.coordinates;
   i=1;
-  console.log(coor.length)
+
   window.setInterval(function() {
-      i++
+      i++;
       marker.setLatLng(L.latLng(
           coor[i][1],coor[i][0]
-      ))
-  }, 47);
+      ));
+  }, 18);
 
-  marker.addTo(map).bindPopup('<video id="sampleMovie" width="320" height="180" preload controls autoplay><source src="http://pdl.vimeocdn.com/66858/523/174342957.mp4?aksessionid=721ae4e6ed50b849c69204944cd41f26&token=1372638456_7b5c8a694b665709aff5f76f24368f78" type="video/mp4; codecs="avc1.42E01E, mp4a.40.2" /></video>').openPopup();
+  marker.bindPopup('<iframe src="http://player.vimeo.com/video/69426498?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',{
+      keepInView:false,
+      autoPan:false,
+      closeButton:false,
+      maxWidth:1000,
+  }).openPopup();
 
-
+  marker._popup.setLatLng = function(latlng) {
+      this._latlng = L.latLng(latlng);
+      this._updatePosition();
+      this._adjustPan();
+  }
 
 </script>
 </script>
